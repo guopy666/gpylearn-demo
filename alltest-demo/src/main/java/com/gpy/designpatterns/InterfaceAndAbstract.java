@@ -7,4 +7,5 @@ package com.gpy.designpatterns;
  * @Date 2021/5/28 11:58
  */
 public class InterfaceAndAbstract {
+
 }

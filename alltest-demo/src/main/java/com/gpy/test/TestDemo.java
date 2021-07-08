@@ -1,11 +1,8 @@
 package com.gpy.test;
 
-import org.springframework.util.StringUtils;
+import com.google.common.base.Joiner;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName TestDemo
@@ -18,10 +15,22 @@ public class TestDemo {
     public static void main(String[] args) {
         Date dayStart = getDayStart(new Date());
         System.out.println(dayStart);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(4);
+        list.add(3);
+        list.add(2);
+        String join = Joiner.on(",").join(list);
+        System.out.println(join);
 
-        List<Long> longs = Arrays.asList(111L, 3333L, 544444L);
-        String s = list2String(longs);
-        System.out.println(s);
+        System.out.println("---" + list.toString().substring(0, list.size()-1));
+
+
+        int pageSize = 10;
+        int totalNum = 101;
+        int threadNum=(totalNum-1)/pageSize+1;
+        System.out.println(threadNum);
+
     }
 
     public static Date getDayStart(Date date) {
@@ -34,33 +43,7 @@ public class TestDemo {
         return calendar.getTime();
     }
 
-    public static String list2String(List<Long> longList){
-        if (longList==null) {
-            return null;
-        }
-        String result="";
-        for (Long id : longList) {
-            if (id==null){
-                continue;
-            }
-            if(isBlank(result)){
-                result=toString(id, null);
-            }else{
-                result=result+","+ toString(id, null);
-            }
-        }
-        return result;
-    }
 
-    public static boolean isBlank(String str){
-        if(StringUtils.isEmpty(str)){
-            return true;
-        }
-        if("null".equalsIgnoreCase(str.trim())){
-            return true;
-        }
-        return false;
-    }
 
     public static String toString(Object value, String defaultValue){
         if(value == null){
