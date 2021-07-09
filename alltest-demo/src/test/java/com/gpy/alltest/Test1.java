@@ -1,5 +1,8 @@
 package com.gpy.alltest;
 
+import com.gpy.algorithm.sort.BinarySearch;
+import com.gpy.algorithm.sort.BubbleSort;
+import com.gpy.algorithm.sort.InsertionSort;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
@@ -84,6 +87,22 @@ public class Test1 {
         System.out.println("head----" + queue.getHead());
         System.out.println("tail----" + queue.getTail());
         System.out.println(Arrays.toString(queue.getItems()));
+    }
+
+    @Test
+    public void testSort(){
+        int[] array = {1,3,5,32,4,7,12,43,2,7};
+        int[] sort = BubbleSort.bubbleSort(array);
+        System.out.println(Arrays.toString(sort));
+        int[] insertSort = InsertionSort.insertSort(array);
+        System.out.println(Arrays.toString(insertSort));
+    }
+
+    @Test
+    public void testBinarySearch(){
+        int[] arr = {1,2,3,4,5,6,7,8,9};
+        int i = BinarySearch.binarySearch(arr, 4);
+        System.out.println(i);
     }
 
 }

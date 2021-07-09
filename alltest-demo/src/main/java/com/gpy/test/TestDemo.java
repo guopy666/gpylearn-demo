@@ -43,8 +43,6 @@ public class TestDemo {
         return calendar.getTime();
     }
 
-
-
     public static String toString(Object value, String defaultValue){
         if(value == null){
             return defaultValue;
