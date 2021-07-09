@@ -1,6 +1,6 @@
 package com.gpy.alltest;
 
-import com.gpy.algorithm.sort.BinarySearch;
+import com.gpy.algorithm.BinarySearch;
 import com.gpy.algorithm.sort.BubbleSort;
 import com.gpy.algorithm.sort.InsertionSort;
 import com.gpy.datastructure.MyArrayQueue;
