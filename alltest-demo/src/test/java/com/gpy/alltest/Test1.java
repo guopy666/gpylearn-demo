@@ -6,9 +6,13 @@ import com.gpy.algorithm.sort.InsertionSort;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
+import com.transinfo.utils.SecurityUtils;
+import com.transinfo.utils.sm4.SM4Utils;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * @ClassName Test1
@@ -104,5 +108,26 @@ public class Test1 {
         int i = BinarySearch.binarySearch(arr, 4);
         System.out.println(i);
     }
+
+
+    @Test
+    public void testSec(){
+        String str = "{msg: \"\",code: \"100\",data: {list: [{},{},{}],goodsclasslist: []},success: true,now: 1626746658721}";
+        String encryStr = SM4Utils.encryptData_ECB(str, "52RFFHBWQRUCGUCE");
+
+
+        String mi = "eyIxIjoiNTIwNjI4MDAxMjEwMDAzNjgxMDc0MCIsIjIiOiI1MjA2MjgwMDEiLCIzIjoiMDAwMDAwMDAwIiwiNCI6IiIsIjUiOiIxIiwiNiI6IjI1LjAiLCI3IjoiMjAyMTA3MjAiLCI4IjoiMTQ1MDAwIiwiOSI6IjEyIiwiMTAiOiLlvKDkvJrokI0iLCIxMSI6IjEiLCIxMiI6IjUyMjIyOTE5OTgxMTExNTQyNSJ9";
+
+        String s = SM4Utils.decryptData_ECB(mi, "52RFFHBWQRUCGUCE");
+
+        System.out.println(encryStr);
+        System.out.println(s);
+
+        byte[] decode = Base64.getDecoder().decode(mi.getBytes(StandardCharsets.UTF_8));
+        String s1 = new String(decode);
+        System.out.println(s1);
+
+    }
+
 
 }
