@@ -1,1 +1,1 @@
-借鉴 Google Guava Eventbus 框架的设计思想，实现的异步非阻塞的观察者模式
+借鉴 Google Guava Eventbus 框架的设计思想，实现的观察者模式

@@ -129,5 +129,14 @@ public class Test1 {
 
     }
 
+    @Test
+    public void testShutDownHook(){
+        Runtime.getRuntime().addShutdownHook(new ShutDownHook());
+    }
 
+    private static class ShutDownHook extends Thread{
+        public void run(){
+            System.out.println("i am callbacked!");
+        }
+    }
 }
