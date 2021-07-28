@@ -1,15 +1,15 @@
-package com.gpy.designpatterns.chainofresponsibility;
+package com.gpy.designpatterns.chainofresponsebility;
 
-import com.gpy.designpatterns.chainofresponsibility.basedemo.HandlerA;
-import com.gpy.designpatterns.chainofresponsibility.basedemo.HandlerB;
-import com.gpy.designpatterns.chainofresponsibility.basedemo.HandlerChain;
-import com.gpy.designpatterns.chainofresponsibility.demo1.NewHandlerA;
-import com.gpy.designpatterns.chainofresponsibility.demo1.NewHandlerB;
-import com.gpy.designpatterns.chainofresponsibility.demo1.NewHandlerChain;
-import com.gpy.designpatterns.chainofresponsibility.demo2.HandlerChain3;
-import com.gpy.designpatterns.chainofresponsibility.demo2.HandlerImplA;
-import com.gpy.designpatterns.chainofresponsibility.demo2.HandlerImplB;
-import com.gpy.designpatterns.chainofresponsibility.demo2.IHandler;
+import com.gpy.designpatterns.chainofresponsebility.basedemo.HandlerA;
+import com.gpy.designpatterns.chainofresponsebility.basedemo.HandlerB;
+import com.gpy.designpatterns.chainofresponsebility.basedemo.HandlerChain;
+import com.gpy.designpatterns.chainofresponsebility.demo1.NewHandlerA;
+import com.gpy.designpatterns.chainofresponsebility.demo1.NewHandlerB;
+import com.gpy.designpatterns.chainofresponsebility.demo1.NewHandlerChain;
+import com.gpy.designpatterns.chainofresponsebility.demo2.HandlerChain3;
+import com.gpy.designpatterns.chainofresponsebility.demo2.HandlerImplA;
+import com.gpy.designpatterns.chainofresponsebility.demo2.HandlerImplB;
+import com.gpy.designpatterns.chainofresponsebility.demo2.IHandler;
 
 /**
  * @ClassName Demo
@@ -22,7 +22,6 @@ public class Demo {
     public static void main(String[] args) {
         HandlerA handlerA = new HandlerA();
         HandlerB handlerB = new HandlerB();
-
         HandlerChain handlerChain = new HandlerChain();
         handlerChain.addHandler(handlerA);
         handlerChain.addHandler(handlerB);
@@ -43,7 +42,6 @@ public class Demo {
 
         IHandler iHandlerA = new HandlerImplA();
         IHandler iHandlerB = new HandlerImplB();
-
         HandlerChain3 handlerChain3 = new HandlerChain3();
         handlerChain3.addHandler(iHandlerA);
         handlerChain3.addHandler(iHandlerB);

@@ -1,4 +1,4 @@
-package com.gpy.designpatterns.chainofresponsibility.demo2;
+package com.gpy.designpatterns.chainofresponsebility.demo2;
 
 import java.util.ArrayList;
 import java.util.List;

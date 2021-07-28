@@ -1,4 +1,4 @@
-package com.gpy.designpatterns.chainofresponsibility.basedemo;
+package com.gpy.designpatterns.chainofresponsebility.basedemo;
 
 /**
  * @ClassName HandlerA

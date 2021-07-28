@@ -1,4 +1,4 @@
-package com.gpy.designpatterns.chainofresponsibility.demo1;
+package com.gpy.designpatterns.chainofresponsebility.demo1;
 
 /**
  * @ClassName NewHandlerA
