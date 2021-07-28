@@ -24,5 +24,4 @@ public class DoubleCheckSingleton {
         }
         return INSTANCE;
     }
-
 }

@@ -1,8 +1,10 @@
 package com.gpy.alltest;
 
+import com.google.common.collect.Lists;
 import com.gpy.algorithm.BinarySearch;
 import com.gpy.algorithm.sort.BubbleSort;
 import com.gpy.algorithm.sort.InsertionSort;
+import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
@@ -11,8 +13,11 @@ import com.transinfo.utils.sm4.SM4Utils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName Test1
@@ -138,5 +143,24 @@ public class Test1 {
         public void run(){
             System.out.println("i am callbacked!");
         }
+    }
+
+
+    @Test
+    public void testLambdy(){
+        List<Person> list = Lists.newArrayList();
+        List<Integer> collect = list.stream().map(Person::getAge).collect(Collectors.toList());
+
+        Person person = new Person();
+        person.setAge(20);
+        Person person1 = new Person();
+        person1.setAge(22);
+        Person person2 = new Person();
+        person2.setAge(16);
+        list.add(person);
+        list.add(person1);
+        list.add(person2);
+        List<Integer> collect1 = list.stream().filter(ft -> ft.getAge() > 18).map(Person::getAge).collect(Collectors.toList());
+        System.out.println(collect1);
     }
 }

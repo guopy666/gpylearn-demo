@@ -1,7 +1,5 @@
 package com.gpy.algorithm;
 
-import javax.xml.bind.ValidationEvent;
-
 /**
  * @ClassName BinarySearch 二分查找法(从一个数组中查找是否存在某个元素)
  * @Description 二分查找法的局限性：必须是数组，并且元素是有序的
