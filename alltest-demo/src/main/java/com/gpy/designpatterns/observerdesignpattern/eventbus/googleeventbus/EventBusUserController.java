@@ -6,7 +6,6 @@ import com.gpy.designpatterns.observerdesignpattern.observeraction.RegObserver;
 import com.gpy.designpatterns.observerdesignpattern.observeraction.UserService;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**

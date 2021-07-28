@@ -1,7 +1,5 @@
 package com.gpy.designpatterns.compositdesignpattern;
 
-import java.nio.file.Path;
-
 /**
  * @ClassName MyFile
  * @Description
