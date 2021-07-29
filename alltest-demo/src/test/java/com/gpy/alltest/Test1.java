@@ -8,15 +8,13 @@ import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
+import com.gpy.designpatterns.iteratordesignpattern.ArrayIterator;
 import com.transinfo.utils.SecurityUtils;
 import com.transinfo.utils.sm4.SM4Utils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -162,5 +160,20 @@ public class Test1 {
         list.add(person2);
         List<Integer> collect1 = list.stream().filter(ft -> ft.getAge() > 18).map(Person::getAge).collect(Collectors.toList());
         System.out.println(collect1);
+    }
+
+    @Test
+    public void testIter(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("3");
+        list.add("5");
+        list.add("4");
+        list.add("6");
+
+        Iterator<String> iterator = list.iterator();
+        iterator.next();
+        iterator.remove();
+        iterator.remove();
     }
 }
