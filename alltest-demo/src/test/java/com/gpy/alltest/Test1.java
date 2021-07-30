@@ -8,14 +8,13 @@ import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
-import com.gpy.designpatterns.iteratordesignpattern.ArrayIterator;
-import com.transinfo.utils.SecurityUtils;
 import com.transinfo.utils.sm4.SM4Utils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @ClassName Test1
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 public class Test1 {
 
     @Test
-    public void test1(){
+    public void test1() {
         MyArrayStack myArrayStack = new MyArrayStack(10);
         Boolean aaa = myArrayStack.push("aaa");
         System.out.println(myArrayStack.getCount());
@@ -37,7 +36,7 @@ public class Test1 {
     }
 
     @Test
-    public void testMyQueue(){
+    public void testMyQueue() {
         MyArrayQueue queue = new MyArrayQueue(5);
         Boolean aBoolean = queue.enqueue("1111");
         System.out.println(aBoolean);
@@ -59,7 +58,7 @@ public class Test1 {
     }
 
     @Test
-    public void testMyCircularQueue(){
+    public void testMyCircularQueue() {
         MyCircularQueue queue = new MyCircularQueue(5);
         queue.enqueue("1111");
         queue.enqueue("2222");
@@ -97,8 +96,8 @@ public class Test1 {
     }
 
     @Test
-    public void testSort(){
-        int[] array = {1,3,5,32,4,7,12,43,2,7};
+    public void testSort() {
+        int[] array = {1, 3, 5, 32, 4, 7, 12, 43, 2, 7};
         int[] sort = BubbleSort.bubbleSort(array);
         System.out.println(Arrays.toString(sort));
         int[] insertSort = InsertionSort.insertSort(array);
@@ -106,15 +105,15 @@ public class Test1 {
     }
 
     @Test
-    public void testBinarySearch(){
-        int[] arr = {1,2,3,4,5,6,7,8,9};
+    public void testBinarySearch() {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         int i = BinarySearch.binarySearch(arr, 4);
         System.out.println(i);
     }
 
 
     @Test
-    public void testSec(){
+    public void testSec() {
         String str = "{msg: \"\",code: \"100\",data: {list: [{},{},{}],goodsclasslist: []},success: true,now: 1626746658721}";
         String encryStr = SM4Utils.encryptData_ECB(str, "52RFFHBWQRUCGUCE");
 
@@ -133,19 +132,19 @@ public class Test1 {
     }
 
     @Test
-    public void testShutDownHook(){
+    public void testShutDownHook() {
         Runtime.getRuntime().addShutdownHook(new ShutDownHook());
     }
 
-    private static class ShutDownHook extends Thread{
-        public void run(){
+    private static class ShutDownHook extends Thread {
+        public void run() {
             System.out.println("i am callbacked!");
         }
     }
 
 
     @Test
-    public void testLambdy(){
+    public void testLambdy() {
         List<Person> list = Lists.newArrayList();
         List<Integer> collect = list.stream().map(Person::getAge).collect(Collectors.toList());
 
@@ -163,7 +162,7 @@ public class Test1 {
     }
 
     @Test
-    public void testIter(){
+    public void testIter() {
         ArrayList<String> list = new ArrayList<>();
         list.add("1");
         list.add("3");
@@ -175,5 +174,46 @@ public class Test1 {
         iterator.next();
         iterator.remove();
         iterator.remove();
+    }
+
+    @Test
+    public void testComparator() {
+        List<Person> people = new ArrayList<>();
+        Person person1 = new Person();
+        person1.setId(111).setName("zhagnsan").setAge(20).setSex(1);
+        Person person2 = new Person();
+        person2.setId(222).setName("lisi").setAge(23).setSex(0);
+        Person person3 = new Person();
+        person3.setId(333).setName("wangwu").setAge(18).setSex(1);
+        System.out.println(person2);
+        people.add(person1);
+        people.add(person2);
+        people.add(person3);
+        Collections.sort(people, new AgeComparator());
+        System.out.println(people);
+    }
+
+
+    class AgeComparator implements Comparator<Person> {
+        @Override
+        public int compare(Person o1, Person o2) {
+            return o1.getAge() - o2.getAge();
+        }
+    }
+
+    class NameComparator implements Comparator<Person> {
+        @Override
+        public int compare(Person o1, Person o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    }
+
+    @Test
+    public void testLambda(){
+        Optional<Integer> result = Stream.of("abc", "d", "efg", "hijk", "l")
+                .filter(l -> l.length() <= 3)
+                .map(str -> str.length())
+                .max((o1, o2) -> o1 - o2);
+        System.out.println(result.get());
     }
 }
