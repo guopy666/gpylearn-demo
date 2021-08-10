@@ -1,5 +1,6 @@
 package com.gpy.alltest;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.gpy.algorithm.BinarySearch;
 import com.gpy.algorithm.sort.BubbleSort;
@@ -10,6 +11,7 @@ import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
 import com.transinfo.utils.sm4.SM4Utils;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StopWatch;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -144,7 +146,7 @@ public class Test1 {
 
 
     @Test
-    public void testLambdy() {
+    public void testStream() {
         List<Person> list = Lists.newArrayList();
         List<Integer> collect = list.stream().map(Person::getAge).collect(Collectors.toList());
 
@@ -209,11 +211,24 @@ public class Test1 {
     }
 
     @Test
-    public void testLambda(){
+    public void testLambda() {
         Optional<Integer> result = Stream.of("abc", "d", "efg", "hijk", "l")
                 .filter(l -> l.length() <= 3)
                 .map(str -> str.length())
                 .max((o1, o2) -> o1 - o2);
         System.out.println(result.get());
+    }
+
+    @Test
+    public void testStopWatch(){
+
+        try {
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            Thread.sleep(2000L);
+            stopwatch.stop();
+            System.out.println(stopwatch);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

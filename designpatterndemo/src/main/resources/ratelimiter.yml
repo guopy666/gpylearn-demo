@@ -1,0 +1,15 @@
+config:
+- appId: v1
+  limits:
+  - api: /v1/service1
+    limit: 100
+    unit: 60
+  - api: /v1/service2
+    limit: 80
+- appId: v2
+  limits:
+  - api: /v2/service1
+    limit: 50
+  - api: /v2/service2
+    limit: 50
+
