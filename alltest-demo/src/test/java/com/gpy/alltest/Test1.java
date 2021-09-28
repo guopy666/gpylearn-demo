@@ -1,5 +1,9 @@
 package com.gpy.alltest;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.gpy.algorithm.BinarySearch;
@@ -9,10 +13,16 @@ import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
+import com.gpy.test.QYUtils;
 import com.transinfo.utils.sm4.SM4Utils;
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.util.Assert;
 import org.springframework.util.StopWatch;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -231,4 +241,101 @@ public class Test1 {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void tetJoiner(){
+        ArrayList<String> strings = new ArrayList<>();
+        String join = Joiner.on(',').join(strings);
+        System.out.println(join);
+    }
+
+    @Test
+    public void testBigdecimal(){
+        BigDecimal allUserTotalMoney = new BigDecimal(0.6);
+        BigDecimal money = new BigDecimal(0.3);
+        BigDecimal allUserTotalMoneyConig = new BigDecimal(0.8);
+        System.out.println(allUserTotalMoney.add(money));
+        System.out.println(allUserTotalMoney.add(money).compareTo(allUserTotalMoneyConig));
+
+        Boolean b = allUserTotalMoney.add(money).compareTo(allUserTotalMoneyConig) == 1;
+        System.out.println(b);
+    }
+
+
+    @Test
+    public void testTagPrice() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("goodsInventoryDetail","[{\"qiang_price\":\"9888\",\"price\":\"9999\",\"supplyprice\":\"9590\",\"count\":\"1\",\"id\":\"254717_254719_\",\"lowestBuy\":1},{\"qiang_price\":\"10699\",\"price\":\"10999\",\"supplyprice\":\"10370\",\"count\":\"5\",\"id\":\"254718_254719_\",\"lowestBuy\":1}]");
+        String goodsInventoryDetail = QYUtils.toString(map.get("goodsInventoryDetail"));
+        BigDecimal goodsSupplyPrice = QYUtils.toDecimal(225, BigDecimal.ZERO);
+        BigDecimal goodsStorePrice = QYUtils.toDecimal(275, BigDecimal.ZERO);
+        if (StringUtils.isNotBlank(goodsInventoryDetail) && !"[]".equals(goodsInventoryDetail)) {
+            //多规格
+            List<Map<String, Object>> inventoryDetails = JSONObject.parseObject(goodsInventoryDetail,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            BigDecimal allSupplyPrice = goodsSupplyPrice; // 供价
+            JSONObject jsonObject;
+            JSONArray jsonarray = new JSONArray();
+            for (Map<String, Object> detail : inventoryDetails) {
+                // id
+                String id = QYUtils.toString(detail.get("id"));
+                // 供价
+                BigDecimal supplyprice = QYUtils.toDecimal(detail.get("supplyprice"));
+                // 店铺价
+                BigDecimal storePrice = QYUtils.toDecimal(detail.get("price"));
+
+                supplyprice = QYUtils.isNull0(supplyprice) ? allSupplyPrice : supplyprice;
+                //计算内购价
+                BigDecimal tagPrice = QYUtils.mulBD(supplyprice, QYUtils.addBD(QYUtils.toDecimal(1), QYUtils.div(1, 100, 8)));
+                tagPrice = getStaffPrice(storePrice, tagPrice);
+
+                jsonObject = new JSONObject();
+                jsonObject.put("id", id);
+                jsonObject.put("price", tagPrice);
+                jsonarray.add(jsonObject);
+            }
+            System.out.println(jsonarray);
+        }
+    }
+    private BigDecimal getStaffPrice(BigDecimal storePrice, BigDecimal staffPrice) {
+        //员工价大于等于店铺价 取店铺价
+        storePrice = QYUtils.toDecimal(storePrice, BigDecimal.ZERO);
+        staffPrice = staffPrice.compareTo(storePrice) >= 0 ? storePrice : staffPrice;
+
+        return staffPrice;
+    }
+
+    @Test
+    public void testss(){
+
+        String aliAccount = "123456789";
+        String lastString = "";
+        if (aliAccount.contains("@")){
+            lastString += aliAccount.substring(aliAccount.indexOf("@"));
+        } else {
+            lastString += aliAccount.substring(aliAccount.length() -3);
+        }
+        System.out.println(( aliAccount.substring(0,3) + "****" + lastString));
+
+    }
+
+
+    public static void isNotNull(Object arg, String message) {
+        if (arg == null) {
+            error(message);
+        }
+    }
+
+    public static void error(String message){
+        throw new IllegalArgumentException(message);
+    }
+
+    @Test
+    public void testDe(){
+        BigDecimal decimal = new BigDecimal(0.3);
+        int i = decimal.compareTo(new BigDecimal(0.119));
+        System.out.println(i);
+    }
+
 }
