@@ -1,0 +1,6 @@
+# 放开actuator的所有监控url
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
