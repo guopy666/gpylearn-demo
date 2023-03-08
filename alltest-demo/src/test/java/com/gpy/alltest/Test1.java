@@ -18,6 +18,7 @@ import com.gpy.datastructure.MyCircularQueue;
 import com.gpy.test.QYUtils;
 import com.gpy.utils.DateUtil;
 import com.transinfo.utils.sm4.SM4Utils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
@@ -25,6 +26,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
@@ -1150,6 +1152,87 @@ public class Test1 {
         }
 
         System.out.println(list.toString());
+
+    }
+
+    @Test
+    public void testspilit(){
+        String s = "漯河市—普通商品—单规格,,";
+        String[] split = s.split(",");
+        System.out.println(split.length);
+        for (int i = 0; i < split.length; i++) {
+            System.out.println( i + split[i]);
+            if (i == 2){
+                System.out.println(i + "测试是是是");
+            }
+        }
+
+    }
+
+
+    @Test
+    public void testjson(){
+        String s = "[{cityId: \"1\", areaIds: \"11,12,13\"}, {cityId: \"2\", aredIds: \"22,23,21\"}]";
+        JSONArray jsonArray = JSON.parseArray(s);
+        StringBuilder sb = new StringBuilder();
+        List<String> list = Lists.newArrayList();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            String cityId = jsonObject.getString("cityId");
+            list.add(cityId);
+        }
+        String join = Joiner.on(",").join(list);
+        System.out.println(join);
+
+    }
+
+    @Test
+    public void testmath(){
+        BigDecimal price = new BigDecimal(1);
+        Integer count = 1;
+        String rewardAmount = "0.3";
+        //固定金额的分佣方式
+        BigDecimal totalProfit = new BigDecimal(count).multiply(new BigDecimal(rewardAmount));
+        //平台7%手续费
+        BigDecimal fee = totalProfit.multiply(new BigDecimal(7)).divide(new BigDecimal(100), 2, RoundingMode.HALF_DOWN);
+
+        BigDecimal brokerProfit = totalProfit.subtract(fee);
+        System.out.println(totalProfit + "--" + fee + "--" + brokerProfit);
+    }
+
+
+    @Test
+    public void  testrand(){
+        System.out.println(System.currentTimeMillis());
+        for (int i=0;i<100;i++) {
+            long l = System.currentTimeMillis();
+            String s = String.valueOf(l).substring(2);
+            int r = new Random().nextInt(899) + 100;
+            System.out.println(s + r);
+        }
+    }
+
+    @Test
+    public void testr(){
+        Random rand = new Random();
+        String randStr = "";
+        for (int i = 0; i < 10; i++) {
+            randStr += rand.nextInt(10);
+        }
+        System.out.println("10位随机数：" + randStr);
+    }
+
+    @Test
+    public void testtemp(){
+        String s = "1,23,3";
+        String[] split = s.split(",");
+        HashMap<Long, String> hashMap = new HashMap<>();
+        hashMap.put(1L,"234");
+        for (String s1 : split) {
+            if (hashMap.containsKey(Long.valueOf(s1))){
+                System.out.println(s1);
+            }
+        }
 
     }
 
