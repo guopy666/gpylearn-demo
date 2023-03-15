@@ -1,7 +1,7 @@
 package com.gpy.springalltong.mybatisdemo;
 
 import com.gpy.springalltong.mybatisdemo.mapper.GoodsMapper;
-import com.gpy.springalltong.mybatisdemo.model.Goods;
+import com.gpy.springalltong.testmodel.Goods;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -34,7 +34,7 @@ public class MybatisDemoApplication implements CommandLineRunner {
         testMybatis();
     }
 
-    private void testMybatis() {
+    private void testMybatis() throws InterruptedException {
         Goods goods = Goods.builder().name("集成灶").price(Money.of(CurrencyUnit.of("CNY"), 6000.0)).build();
         int save = goodsMapper.save(goods);
         log.info("Save {} goodsinfo:{}", save, goods);
@@ -43,5 +43,6 @@ public class MybatisDemoApplication implements CommandLineRunner {
         log.info("Save second goods{}, goods:{}", c, goods);
         Goods goods1 = goodsMapper.findById(goods.getId());
         log.info("Goods Info-->{}", goods1);
+
     }
 }

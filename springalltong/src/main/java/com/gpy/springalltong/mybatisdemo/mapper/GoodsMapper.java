@@ -1,6 +1,6 @@
 package com.gpy.springalltong.mybatisdemo.mapper;
 
-import com.gpy.springalltong.mybatisdemo.model.Goods;
+import com.gpy.springalltong.testmodel.Goods;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

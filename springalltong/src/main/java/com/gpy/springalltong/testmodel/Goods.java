@@ -1,4 +1,4 @@
-package com.gpy.springalltong.mybatisdemo.model;
+package com.gpy.springalltong.testmodel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
