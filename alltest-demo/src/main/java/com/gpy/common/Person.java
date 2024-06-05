@@ -19,4 +19,5 @@ public class Person implements Serializable {
     private String name;
     private Integer sex;
     private Integer age;
+    private Content content;
 }

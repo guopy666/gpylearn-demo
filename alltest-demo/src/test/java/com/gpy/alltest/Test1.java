@@ -1,5 +1,6 @@
 package com.gpy.alltest;
 
+import cn.hutool.Hutool;
 import cn.hutool.core.util.PinyinUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -11,27 +12,41 @@ import com.google.common.collect.Lists;
 import com.gpy.algorithm.BinarySearch;
 import com.gpy.algorithm.sort.BubbleSort;
 import com.gpy.algorithm.sort.InsertionSort;
+import com.gpy.common.Content;
 import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
+import com.gpy.test.DateUtils;
 import com.gpy.test.QYUtils;
+import com.gpy.utils.DateStyle;
 import com.gpy.utils.DateUtil;
 import com.transinfo.utils.sm4.SM4Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,6 +56,7 @@ import java.util.stream.Stream;
  * @Author guopy
  * @Date 2021/7/7 17:35
  */
+@Slf4j
 public class Test1 {
 
     @Test
@@ -55,6 +71,7 @@ public class Test1 {
     }
 
     @Test
+
     public void testMyQueue() {
         MyArrayQueue queue = new MyArrayQueue(5);
         Boolean aBoolean = queue.enqueue("1111");
@@ -188,6 +205,8 @@ public class Test1 {
         list.add("5");
         list.add("4");
         list.add("6");
+        list.add("7");
+
 
         Iterator<String> iterator = list.iterator();
         iterator.next();
@@ -266,6 +285,9 @@ public class Test1 {
 
         Boolean b = allUserTotalMoney.add(money).compareTo(allUserTotalMoneyConig) == 1;
         System.out.println(b);
+
+
+
     }
 
 
@@ -965,6 +987,11 @@ public class Test1 {
 
 
     @Test
+    public void maopao(){
+
+    }
+
+    @Test
     public void testpin() {
         ArrayList<Map<String, Object>> list = new ArrayList<>();
         HashMap<String, Object> map = new HashMap<>();
@@ -1203,13 +1230,9 @@ public class Test1 {
 
     @Test
     public void  testrand(){
-        System.out.println(System.currentTimeMillis());
-        for (int i=0;i<100;i++) {
-            long l = System.currentTimeMillis();
-            String s = String.valueOf(l).substring(2);
-            int r = new Random().nextInt(899) + 100;
-            System.out.println(s + r);
-        }
+        String orgIdsStr = ",2,3,3,";
+        String substring = orgIdsStr.substring(1, orgIdsStr.length() - 1);
+        System.out.println(substring);
     }
 
     @Test
@@ -1224,16 +1247,198 @@ public class Test1 {
 
     @Test
     public void testtemp(){
-        String s = "1,23,3";
-        String[] split = s.split(",");
-        HashMap<Long, String> hashMap = new HashMap<>();
-        hashMap.put(1L,"234");
-        for (String s1 : split) {
-            if (hashMap.containsKey(Long.valueOf(s1))){
-                System.out.println(s1);
+        for (int i = 0; i < 10; i++) {
+            System.out.println("===" + i);
+            for (int j = 0; j < 3; j++) {
+                if (j == 1){
+                    continue;
+                }
+                System.out.println("----" + i + "---" + j);
             }
         }
+    }
 
+
+    @Test
+    public void testde(){
+        List<Map<String, Object>> list = new ArrayList<>();
+        HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("resId", 1L);
+        map1.put("name", "test");
+        HashMap<String, Object> map2 = new HashMap<>();
+        map2.put("resId", 2L);
+        map2.put("name", "222");
+        list.add(map1);
+        list.add(map2);
+        List<Long> idList = list.stream().map(map -> QYUtils.toLong(map.get("resId"))).collect(Collectors.toList());
+        System.out.println(idList);
+    }
+
+
+    public static BigDecimal toDecimal(Object value, int scale){
+        if(value == null){
+            return null;
+        }
+        if(value instanceof BigDecimal){
+            BigDecimal result = ((BigDecimal) value).setScale(scale);
+            return result;
+        }
+        return null;
+    }
+
+
+    @Test
+    public void testLOngggg(){
+        Date date = new Date();
+        Date date1 = DateUtils.addMinute(date, 30);
+        System.out.println(DateUtils.DateToString(date1, "YYYY-MM-DD hh:mm:ss"));
+    }
+
+    @Test
+    public void testtime() throws ParseException {
+        String str = "请选择产品2404161558080621054可使用日期内日期下单，所选日期:需 2024-05-29[109686]";
+        System.out.println(removeBracketsAndContent(str));
+    }
+
+    private static String removeBracketsAndContent(String input) {
+        Pattern pattern = Pattern.compile("\\[.*?\\]");
+        Matcher matcher = pattern.matcher(input);
+        return matcher.replaceAll("");
+    }
+
+    private static boolean isInTimeRange(String startTime, String endTime) throws ParseException {
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
+        return startDate.getTime() <= endDate.getTime();
+    }
+
+
+    @Test
+    public void testdec(){
+        Integer i = 1;
+        switch (i){
+            case 1:
+            case 2:
+                System.out.println("1112222");
+                break;
+            case 3:
+                System.out.println("33333333333");
+        }
+
+    }
+
+    @Test
+    public void testi() {
+        //退款金额
+        BigDecimal returnAmount = QYUtils.toDecimal(928.00);
+        BigDecimal proportion = new BigDecimal(0);//退款占比
+        if (returnAmount.compareTo(BigDecimal.ZERO) != 0) {//不等于0
+            BigDecimal amount = QYUtils.mulBD(928.00, 1);
+            proportion = QYUtils.divBD(returnAmount, amount, 2);
+        }
+
+        BigDecimal broker_profit = QYUtils.toDecimal(21.84);
+        BigDecimal broker_returnAmount = QYUtils.mulBD(broker_profit, proportion); //佣金乘以退款占比所得为扣除佣金
+
+        System.out.println(broker_returnAmount);
+    }
+
+    @Test
+    public void test3234(){
+        List<Map<Integer, String>> list = Lists.newArrayList();
+        for (int i = 0; i < 3; i++) {
+            HashMap<Integer, String> map = new HashMap<>();
+            map.put(i, i + "000");
+            list.add(map);
+        }
+        System.out.println(list);
+
+        for (Map<Integer, String> m : list) {
+            String s = m.get(1);
+            if (null != s && s.equals("1000")){
+                m.put(1, "修改数据");
+            }
+        }
+        System.out.println(list);
+    }
+
+
+    @Test
+    public void testnull(){
+        Integer i = 10;
+        Integer perPageSize = 10;
+        Outer: while (true){
+            //处理数据
+            int startPosition = i * perPageSize; //开始位置
+            StringBuffer limitSql = new StringBuffer("执行第" + i + "数据 limit " + startPosition + ", " + perPageSize);
+            System.out.println(limitSql);
+
+            // 线程数
+            Integer threadNum = 10;
+            //初始化线程池
+            ExecutorService threadPool = Executors.newFixedThreadPool(20);
+            for (int  j = 0; j < threadNum; j++) {
+                final int fj = j;
+                threadPool.execute(() -> {
+                    System.out.println("jjjjjjjjjjjjjj----" + (startPosition + fj));
+                });
+            }
+            threadPool.shutdown();
+            Inner: while (true) {
+                if (threadPool.isTerminated() ) {
+                    System.out.println(i + "===iiiii==========");
+                    break Inner;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
+            }
+
+            i --;
+            if (i < 0){
+                System.out.println("线程终止iiii-->" + i);
+                break Outer;
+            }
+        }
+    }
+
+    @Test
+    public void testsa(){
+        BigDecimal price = BigDecimal.valueOf(0.05);
+        BigDecimal supplyPrice = BigDecimal.valueOf(0.02);
+        BigDecimal rawBeneFits = (price.subtract(supplyPrice)).divide(price, 4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+        System.out.println(rawBeneFits);
+
+    }
+
+    @Test
+    public void testdate(){
+        Date date = QYUtils.toDate("2023-02");
+        Date firstDayOfMonth = DateUtils.getFirstDayOfMonth(date);
+        System.out.println(firstDayOfMonth);
+        Date lastDayOfMonth = DateUtils.getLastDayOfMonth(date);
+        System.out.println(lastDayOfMonth);
+        String parttern = "yyyy-MM-dd HH:mm:ss";
+        String s = DateUtils.DateToString(firstDayOfMonth, parttern);
+        String ls = DateUtils.DateToString(lastDayOfMonth, parttern);
+        System.out.println(s);
+        System.out.println(ls);
+        int year = DateUtils.getYear(date);
+        int month = DateUtils.getMonth(date) - 1;
+        System.out.println(month  +  "--" + year);
+    }
+
+    @Test
+    public void testLongg(){
+        String time = "1744732799000";
+        Long usedEndTime = QYUtils.toLong(time);
+        Date date = new Date(usedEndTime);
+        System.out.println(DateUtils.DateToString(date, DateStyle.YYYY_MM_DD_HH_MM_SS.getValue()));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateStyle.YYYY_MM_DD_HH_MM_SS.getValue());
+        String format = simpleDateFormat.format(date);
+        System.out.println(format);
     }
 
 }

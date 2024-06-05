@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.money.Money;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,6 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Slf4j
 public class Book {
     @Id
     private String id;
@@ -28,4 +30,8 @@ public class Book {
     private Money price;
     private Date addTime;
     private Date updateTime;
+
+    public static void main(String[] args) {
+        log.info("aidafoj" + null);
+    }
 }
