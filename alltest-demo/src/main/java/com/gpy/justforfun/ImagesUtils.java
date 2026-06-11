@@ -2,7 +2,7 @@ package com.gpy.justforfun;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -64,7 +64,7 @@ public class ImagesUtils {
                      */
                     String txt =  subDocument.body().getElementsByClass("pages").select("li").eq(0).html();
                     Matcher m = p.matcher(txt);
-                    if(StringUtils.isNoneBlank(m.replaceAll("").trim())){
+                    if(StringUtils.isNotBlank(m.replaceAll("").trim())){
                         Integer pageNo =  Integer.parseInt(m.replaceAll("").trim());
                         for (int i=0;i<pageNo;i++){
                             String url = baseUrl+href;

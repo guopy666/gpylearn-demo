@@ -1,6 +1,5 @@
 package com.gpy.alltest;
 
-import cn.hutool.Hutool;
 import cn.hutool.core.util.PinyinUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -12,33 +11,32 @@ import com.google.common.collect.Lists;
 import com.gpy.algorithm.BinarySearch;
 import com.gpy.algorithm.sort.BubbleSort;
 import com.gpy.algorithm.sort.InsertionSort;
-import com.gpy.common.Content;
 import com.gpy.common.Person;
 import com.gpy.datastructure.MyArrayQueue;
 import com.gpy.datastructure.MyArrayStack;
 import com.gpy.datastructure.MyCircularQueue;
-import com.gpy.test.DateUtils;
 import com.gpy.test.QYUtils;
-import com.gpy.utils.DateStyle;
 import com.gpy.utils.DateUtil;
-import com.transinfo.utils.sm4.SM4Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.builder.ToStringExclude;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -148,24 +146,7 @@ public class Test1 {
     }
 
 
-    @Test
-    public void testSec() {
-        String str = "{msg: \"\",code: \"100\",data: {list: [{},{},{}],goodsclasslist: []},success: true,now: 1626746658721}";
-        String encryStr = SM4Utils.encryptData_ECB(str, "52RFFHBWQRUCGUCE");
 
-
-        String mi = "eyIxIjoiNTIwNjI4MDAxMjEwMDAzNjgxMDc0MCIsIjIiOiI1MjA2MjgwMDEiLCIzIjoiMDAwMDAwMDAwIiwiNCI6IiIsIjUiOiIxIiwiNiI6IjI1LjAiLCI3IjoiMjAyMTA3MjAiLCI4IjoiMTQ1MDAwIiwiOSI6IjEyIiwiMTAiOiLlvKDkvJrokI0iLCIxMSI6IjEiLCIxMiI6IjUyMjIyOTE5OTgxMTExNTQyNSJ9";
-
-        String s = SM4Utils.decryptData_ECB(mi, "52RFFHBWQRUCGUCE");
-
-        System.out.println(encryStr);
-        System.out.println(s);
-
-        byte[] decode = Base64.getDecoder().decode(mi.getBytes(StandardCharsets.UTF_8));
-        String s1 = new String(decode);
-        System.out.println(s1);
-
-    }
 
     @Test
     public void testShutDownHook() {
@@ -393,18 +374,6 @@ public class Test1 {
         System.out.println(str.substring(str.length() - 1));
     }
 
-    @Test
-    public void tesst() {
-        String str = "{\"areaId\":\"1\",\"userName\":\"张三\",\"mobile\":\"154784595478\",\"detail\":\"河南省 郑州市 郑东新区 龙子湖街道 人保大厦\"}";
-
-        System.out.println(JSON.parseObject(str).getString("areaId"));
-
-        System.out.println(str);
-        String s = StringEscapeUtils.unescapeJson(str);
-        System.out.println(s);
-
-        System.out.println(testttt(10));
-    }
 
     public String testttt(Integer orderStatus) {
         switch (orderStatus) {
@@ -555,24 +524,6 @@ public class Test1 {
         List<AppUnPayOrderInfoVo> collect = result.stream().sorted(Comparator.comparing(AppUnPayOrderInfoVo::getPayOrder).reversed()).collect(Collectors.toList());
 
         System.out.println(collect);
-
-    }
-
-    @Test
-    public void ssss() {
-        String dateBefore = getDateBefore(new Date(), 1);
-
-        String da = "2021-11-21";
-
-        // 计算 dateBefore 的前一天的数据
-        String dateBeforeYesterday = getDateBefore(parseDate(da), 1);
-        String dateTomorrow = getDateBefore(parseDate(da), -1);
-        System.out.println(dateTomorrow);
-        System.out.println(dateBeforeYesterday);
-        System.out.println(dateBefore);
-
-        String join = org.apache.commons.lang3.StringUtils.join("12", "32", "342");
-        System.out.println(join);
 
     }
 
@@ -1289,15 +1240,45 @@ public class Test1 {
 
     @Test
     public void testLOngggg(){
-        Date date = new Date();
-        Date date1 = DateUtils.addMinute(date, 30);
-        System.out.println(DateUtils.DateToString(date1, "YYYY-MM-DD hh:mm:ss"));
+            List<Long> l1 = new ArrayList<>();
+            l1.add(1L);
+            l1.add(12L);
+            l1.add(14L);
+
+            List<Integer> l2 = new ArrayList<>();
+            l2.add(1);
+            l2.add(12);
+            l2.add(14);
+
+            List<Long> collect = l1.stream()
+                    .filter(l2::contains)
+                    .collect(Collectors.toList());
+            System.out.println(collect);
     }
 
     @Test
     public void testtime() throws ParseException {
-        String str = "请选择产品2404161558080621054可使用日期内日期下单，所选日期:需 2024-05-29[109686]";
-        System.out.println(removeBracketsAndContent(str));
+        String storeIds = "11,22,33,44";
+        List<Long> storeIdList = new ArrayList<>();
+        storeIdList.add(11L);
+        /*List<Long> storeIdsAll = Arrays.stream(storeIds.split(","))
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+
+        List<Long> searcStoreIds = storeIdsAll.stream()
+                .filter(storeIdList::contains)
+                .collect(Collectors.toList());
+        System.out.println(searcStoreIds);*/
+
+
+
+        List<Long> storeIdsAll11 = Arrays.stream(storeIds.split(","))
+                .map(Long::valueOf).filter(storeIdList::contains)
+                .collect(Collectors.toList());
+
+        System.out.println(storeIdsAll11);
+
+
     }
 
     private static String removeBracketsAndContent(String input) {
@@ -1315,51 +1296,108 @@ public class Test1 {
 
     @Test
     public void testdec(){
-        Integer i = 1;
-        switch (i){
-            case 1:
-            case 2:
-                System.out.println("1112222");
-                break;
-            case 3:
-                System.out.println("33333333333");
-        }
+
+        List<Long> childrenIds = Arrays.stream("34134362".split(",")).map(childrenId -> Long.valueOf(childrenId)).collect(Collectors.toList());
+        System.out.println(childrenIds);
 
     }
 
     @Test
     public void testi() {
-        //退款金额
-        BigDecimal returnAmount = QYUtils.toDecimal(928.00);
-        BigDecimal proportion = new BigDecimal(0);//退款占比
-        if (returnAmount.compareTo(BigDecimal.ZERO) != 0) {//不等于0
-            BigDecimal amount = QYUtils.mulBD(928.00, 1);
-            proportion = QYUtils.divBD(returnAmount, amount, 2);
+        String ipMappings = "10.30.45.65-47.93.43.50";
+        String metaServer = "10.30.45.65:8080";
+        System.out.println("===> qmq transform:[metaServer=" + metaServer + ",ipMappings=" + ipMappings + "]");
+        if (org.apache.commons.lang.StringUtils.isEmpty(ipMappings)) {
+            System.out.println("111111111111===" + metaServer);
         }
-
-        BigDecimal broker_profit = QYUtils.toDecimal(21.84);
-        BigDecimal broker_returnAmount = QYUtils.mulBD(broker_profit, proportion); //佣金乘以退款占比所得为扣除佣金
-
-        System.out.println(broker_returnAmount);
+        String[] ipAndPort = metaServer.split(":");
+        if (ipAndPort == null || ipAndPort.length < 2) {
+            System.out.println("222222222222===" + metaServer);
+        }
+        String[] ipMappingArray = ipMappings.split(",");
+        if (ipMappingArray == null || ipMappings.length() < 1) {
+            System.out.println("33333333333===" + metaServer);
+        }
+        for (String ipMapping : Arrays.asList(ipMappingArray)) {
+            String oldIp = ipMapping.split("-")[0];
+            String newIp = ipMapping.split("-")[1];
+//                System.out.println("===> qmq transform:["+oldIp + " --- to ---> "+ newIp + "]");
+            metaServer = metaServer.replace(oldIp, newIp);
+        }
+//            System.out.println("===> qmq transform:[result=" + metaServer + "]");
+        System.out.println("4444444444444===" + metaServer);
     }
 
     @Test
     public void test3234(){
-        List<Map<Integer, String>> list = Lists.newArrayList();
-        for (int i = 0; i < 3; i++) {
-            HashMap<Integer, String> map = new HashMap<>();
-            map.put(i, i + "000");
-            list.add(map);
-        }
-        System.out.println(list);
+        String orderChildrenIds = "32782093";
+        BigDecimal totalPriceAll = new BigDecimal(1224.63);//大订单支付金额
+        totalPriceAll = QYUtils.subBD(totalPriceAll, BigDecimal.ZERO);//减去优惠券的金额
 
-        for (Map<Integer, String> m : list) {
-            String s = m.get(1);
-            if (null != s && s.equals("1000")){
-                m.put(1, "修改数据");
+        BigDecimal pointsAmountAll= new BigDecimal(1.23);
+        BigDecimal jycoinAll = BigDecimal.ZERO;
+        totalPriceAll = QYUtils.subBD(totalPriceAll, pointsAmountAll);//减去积分抵扣金额
+        if(!QYUtils.isBlank(orderChildrenIds)){ //大订单下有小订单
+            List<Long> orderIds = QYUtils.getLongList(orderChildrenIds);
+            int i = 0;
+            long jycoinFenAdd = 0;
+            long actualAmountFenAdd = 0;
+            long actualPointFenAdd = 0;
+            long actualBalanceFenAdd = 0;
+            for(Long order_id : orderIds){
+                i++;
+
+                BigDecimal orderTotalPrice = new BigDecimal(1224.63);
+                orderTotalPrice = QYUtils.subBD(orderTotalPrice,BigDecimal.ZERO);//减去优惠券的金额
+
+                BigDecimal pointsAmount= new BigDecimal(1.23);
+                orderTotalPrice = QYUtils.subBD(orderTotalPrice, pointsAmount);//减去积分抵扣金额
+
+
+                //小订单通宝，按照支付金额比例分摊
+                long jycoinFen = 0;
+                if(i < orderIds.size()) {
+                    jycoinFen = Math.round(QYUtils.div(QYUtils.mulBD(QYUtils.yuanToFen(orderTotalPrice), QYUtils.yuanToFen(BigDecimal.ZERO)), QYUtils.yuanToFen(totalPriceAll),8));
+                    jycoinFenAdd = jycoinFenAdd + jycoinFen;
+                }else {
+                    jycoinFen = QYUtils.yuanToFen(BigDecimal.ZERO) - jycoinFenAdd;
+                }
+
+                orderTotalPrice = new BigDecimal(QYUtils.getDecimalStr(orderTotalPrice,2));
+
+                //小订单实际支付金额，按照支付金额比例分摊
+                long actualAmountFen = 0;
+                long actualPointFen = 0;//积分
+                long actualBalanceFen = 0;//本金
+
+                //减掉通宝再进行比例换算
+                long orderPayPrice = QYUtils.yuanToFen(orderTotalPrice) - jycoinFen;
+                long orderPayPriceAll = QYUtils.yuanToFen(totalPriceAll) - QYUtils.yuanToFen(jycoinAll);
+
+
+                BigDecimal actualAmount = new BigDecimal(1224.63);
+
+                System.out.println("提前更新订单实付金额，orderPayPrice="+orderPayPrice+"，orderPayPriceAll="+orderPayPriceAll);
+                if(i < orderIds.size()) {
+                    System.out.println("121212121211");
+                    actualAmountFen = Math.round(QYUtils.div(QYUtils.mulBD(orderPayPrice, QYUtils.yuanToFen(actualAmount)), orderPayPriceAll,8));
+                    actualPointFen = Math.round(QYUtils.div(QYUtils.mulBD(orderPayPrice, QYUtils.yuanToFen(BigDecimal.ZERO)), orderPayPriceAll,8));
+                    actualBalanceFen = Math.round(QYUtils.div(QYUtils.mulBD(orderPayPrice, QYUtils.yuanToFen(BigDecimal.ZERO)), orderPayPriceAll,8));
+
+                    actualAmountFenAdd = actualAmountFenAdd + actualAmountFen;
+                    actualPointFenAdd = actualPointFenAdd + actualPointFen;//积分
+                    actualBalanceFenAdd = actualBalanceFenAdd + actualBalanceFen;//本金
+                }else {
+                    System.out.println("66776767676");
+                    actualAmountFen = QYUtils.yuanToFen(actualAmount) - actualAmountFenAdd;
+                    System.out.println("0000-----" + actualAmount + ",,,,actualfenadd--" + actualAmountFenAdd + "-----amount--" + actualAmountFen);
+                    actualPointFen = QYUtils.yuanToFen(BigDecimal.ZERO) - actualPointFenAdd;//积分
+                    actualBalanceFen = QYUtils.yuanToFen(BigDecimal.ZERO) - actualBalanceFenAdd;//本金
+                }
+                System.out.println("提前更新订单实付金额，orderNo="+"，actualAmountFen="+actualAmountFen);
+
             }
         }
-        System.out.println(list);
     }
 
 
@@ -1404,41 +1442,113 @@ public class Test1 {
     }
 
     @Test
-    public void testsa(){
-        BigDecimal price = BigDecimal.valueOf(0.05);
-        BigDecimal supplyPrice = BigDecimal.valueOf(0.02);
-        BigDecimal rawBeneFits = (price.subtract(supplyPrice)).divide(price, 4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
-        System.out.println(rawBeneFits);
+    public void testsa() throws Exception {
 
+        // 创建一个新的Excel工作簿
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        // 创建一个工作表
+        XSSFSheet sheet = workbook.createSheet("Image Sheet");
+
+        // 加载图片文件
+        InputStream is = new FileInputStream("D:\\IdeaProjects\\gpylearn-demo\\alltest-demo\\0c64393d-7241-482b-9a96-896d3d89e252.png");
+        byte[] bytes = IOUtils.toByteArray(is);
+        is.close();
+
+        // 将图片添加到工作簿中
+        int pictureIdx = workbook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+
+        // 创建图片的锚点
+        CreationHelper createHelper = workbook.getCreationHelper();
+        Drawing drawing = sheet.createDrawingPatriarch();
+        ClientAnchor anchor = createHelper.createClientAnchor();
+
+        // 设置图片的位置
+        anchor.setCol1(0); // 列号从0开始
+        anchor.setRow1(0); // 行号从0开始
+
+        // 创建图片对象并插入到工作表中
+        drawing.createPicture(anchor, pictureIdx);
+
+        // 写入文件
+        FileOutputStream fileOut = new FileOutputStream("output.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+
+        // 关闭工作簿
+        workbook.close();
     }
 
     @Test
     public void testdate(){
-        Date date = QYUtils.toDate("2023-02");
-        Date firstDayOfMonth = DateUtils.getFirstDayOfMonth(date);
-        System.out.println(firstDayOfMonth);
-        Date lastDayOfMonth = DateUtils.getLastDayOfMonth(date);
-        System.out.println(lastDayOfMonth);
-        String parttern = "yyyy-MM-dd HH:mm:ss";
-        String s = DateUtils.DateToString(firstDayOfMonth, parttern);
-        String ls = DateUtils.DateToString(lastDayOfMonth, parttern);
-        System.out.println(s);
-        System.out.println(ls);
-        int year = DateUtils.getYear(date);
-        int month = DateUtils.getMonth(date) - 1;
-        System.out.println(month  +  "--" + year);
+        Integer isBigmarket = null;
+        Long brokerUserId = 111221L;
+        Integer marketChannel = 0;
+        String shareUserToken="weefkfaj809";
+        Long shareUserId = 89998L;
+        if(isBigmarket!=null && isBigmarket == 1){
+            marketChannel = null;
+        }else{
+            if(null == brokerUserId){
+                brokerUserId = shareUserId;
+            }
+
+            if(null == brokerUserId && QYUtils.isNotBlank(shareUserToken)){
+                brokerUserId = 2222222L;
+            }
+        }
+        if(null == brokerUserId && isBigmarket!=1){
+            isBigmarket=1;
+        }
+        System.out.println(brokerUserId);
+        System.out.println(isBigmarket);
     }
 
     @Test
     public void testLongg(){
-        String time = "1744732799000";
-        Long usedEndTime = QYUtils.toLong(time);
-        Date date = new Date(usedEndTime);
-        System.out.println(DateUtils.DateToString(date, DateStyle.YYYY_MM_DD_HH_MM_SS.getValue()));
+        BigDecimal price = BigDecimal.valueOf(7.5);
+        BigDecimal supplyPrice = BigDecimal.valueOf(2.5);
+        Integer integralPayMinProfit = 4;
+        // 是否可积分抵扣 0 不可以，1 可以
+        BigDecimal rawBeneFits = BigDecimal.ZERO;
+        rawBeneFits = (price.subtract(supplyPrice)).divide(price, 4,BigDecimal.ROUND_HALF_UP)
+                .multiply(new BigDecimal(100)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        System.out.println("rawBenefits===========" + rawBeneFits);
+        // 可抵扣利润
+        BigDecimal creditDeductionProfit =  QYUtils.subBD(rawBeneFits, integralPayMinProfit);
+        System.out.println("creditDeductionProfit---" + creditDeductionProfit);
+        if (creditDeductionProfit.compareTo(BigDecimal.ZERO) > 0){
+            BigDecimal bd = QYUtils.divBD(creditDeductionProfit, 100, 4);
+            System.out.println("bd--->" + bd);
+            BigDecimal creditDeductionMoney = QYUtils.mulBD(price, bd);
+            System.out.println(",price->" + price + ",,supplyPrice->" + supplyPrice + ",,,creditDeductionMoney-->" + creditDeductionMoney );
+        }
+    }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateStyle.YYYY_MM_DD_HH_MM_SS.getValue());
-        String format = simpleDateFormat.format(date);
-        System.out.println(format);
+    @Test
+    public void testE(){
+
+        List<Integer> rs = new ArrayList<>();
+        rs.add(5);
+        rs.add(7);
+
+
+        int remaining = 20;
+
+        for (Integer r : rs) {
+            if (remaining <= 0) break;
+
+            int pointsToUse = Math.min(r, remaining);
+            r = (r - pointsToUse);
+            remaining -= pointsToUse;
+
+            if (r == 0) {
+                System.out.println("r--------0");
+            } else {
+                r = (r - remaining);
+            }
+            System.out.println("r--->" + r);
+        }
     }
 
 }

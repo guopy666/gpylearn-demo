@@ -3,7 +3,7 @@ package com.gpy.test;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 
 import java.math.BigDecimal;
@@ -11,10 +11,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 常用工具类
@@ -106,6 +103,38 @@ public class QYUtils {
 		return (a.compareTo(0) != 0);
 	}
 
+	public static List<Long> getLongList(String longStr){
+		return Arrays.asList(getLongs(longStr, ","));
+	}
+	/**
+	 *
+	 * @param idsStr - id列表
+	 * @param spilter - 分割符
+	 * @return
+	 */
+	public static Long[] getLongs(String intStr, String spilter){
+		Long[] ints = {};
+		if(org.apache.commons.lang.StringUtils.isNotBlank(intStr)){
+			String[] parts = intStr.trim().split(spilter);
+			List<Long> result = new ArrayList<Long>();
+			for (int i = 0; i < parts.length; i++) {
+				if(org.apache.commons.lang.StringUtils.isBlank(parts[i]) || "null".equalsIgnoreCase(parts[i].trim())){
+					continue;
+				}
+				try{
+					Long intVal = toLong(parts[i].trim());
+					if(intVal != null && !result.contains(intVal)){
+						result.add(intVal);
+					}
+				} catch(Exception e){}
+
+				//result.add(Integer.parseInt(idInfo[i].trim()));
+			}
+			ints = result.toArray(new Long[result.size()]);
+		}
+		return ints;
+	}
+
 	public static Double toDouble(Object value, Double defaultValue) {
 		if (value == null) {
 			return defaultValue;
@@ -145,6 +174,18 @@ public class QYUtils {
 		return nf.format(decimal);
 	}
 
+	/**
+	 * d1 - d2
+	 * <p>浮点数加减乘除用float、double直接运算，有时会出现精度不准确的情况
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static BigDecimal subBD(Object d1,Object d2){
+		BigDecimal b1 = getDecimal(d1);
+		BigDecimal b2 = getDecimal(d2);
+		return b1.subtract(b2);
+	}
 
 	public static String toString(Object value){
 		return toString(value, null);
@@ -170,7 +211,34 @@ public class QYUtils {
 		}
 		return result;
 	}
-
+	public static Integer yuanToFen(BigDecimal price){
+		if(isNull0(price)){
+			return 0;
+		}
+		Integer amount = toInteger(mul(price, 100));
+		return amount;
+	}
+	/**
+	 * d1*d2
+	 * <p>浮点数加减乘除用float、double直接运算，有时会出现精度不准确的情况
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double mul(Object d1,Object d2){
+		BigDecimal b1 = getDecimal(d1);
+		BigDecimal b2 = getDecimal(d2);
+		return b1.multiply(b2).doubleValue();
+	}
+	/**
+	 * 获取小数显示值
+	 * @param decimal - 小数
+	 * @param scale -固定小数位数
+	 * @return
+	 */
+	public static String getDecimalStr(BigDecimal decimal, int scale){
+		return String.format("%."+scale+"f", decimal);
+	}
 	public static boolean isBlank(String str){
 		if(StringUtils.isBlank(str)){
 			return true;
@@ -190,6 +258,12 @@ public class QYUtils {
 			return true;
 		}
 		return (a.compareTo(BigDecimal.ZERO) == 0);
+	}
+	public static boolean isNull0(Long a){
+		if(a == null){
+			return true;
+		}
+		return (a.compareTo(0l) == 0);
 	}
 
 	public static BigDecimal mulBD(Object d1,Object d2){
